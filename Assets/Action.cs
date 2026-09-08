@@ -2,16 +2,18 @@ using UnityEngine;
 
 public enum ActionType
 {
-    ACTION, MULT, ADD, SUBTRACT
+    ATTACK, DEFEND, MULT
 }
 
-[CreateAssetMenu(fileName = "Action", menuName = "Scriptable Objects/Action")]
-public class Action : ScriptableObject
+public class Action: MonoBehaviour
 {
-    public int size;
-    public bool[] neighbours;
-
-
+    public int totalActivations;
+    public Vector2Int[] neighbours;
     public ActionType actionType;
     public float val;
+
+    public void CreateAction() 
+    { 
+        
+    }
 }

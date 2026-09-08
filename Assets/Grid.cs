@@ -1,72 +1,46 @@
 using UnityEngine;
 
-public class GridNode 
-{ 
-    int x, y;
-    IActionable action;
-
-    public GridNode(int x, int y, IActionable action)
-    {
-        this.x = x;
-        this.y = y;
-        this.action = action;
-    }
-}
-
-
-public class Grid 
+public class Grid : MonoBehaviour
 {
-    GridNode[,] grid;
-    Vector2 originPos;
-    int width, height;
-    float cellSize;
+    public int width, height;
+    public float cellSize;
+    public Vector2 startPos;
+    public GameObject tile;
 
-    public Grid(int width, int height, float cellSize, Vector2 originPos) 
-    { 
-        this.width = width;
-        this.height = height;
-        this.cellSize = cellSize;
-        this.originPos = originPos;
 
-        grid = new GridNode[width, height];
+    public Tile[,] grid;
 
-        for (int x = 0; x < width; x++) 
-        {
-            for (int y = 0; y < height; y++) 
-            { 
-                //grid[x,y] = new GridNode(x,y, NEW THING HERE);
-            }
-        }
-    }
-
-    public void DrawGrid()
+    private void Start()
     {
-        for (int i = 0; i < width; i++)
+        grid = new Tile[width, height];
+
+        for (int x = 0; x < width; x++)
         {
-            for (int j = 0; j < height; j++)
+            for (int y = 0; y < height; y++)
             {
-                Vector2 pos = GetWorldPos(i, j);
-
-                //Draws GridTiles
-                Debug.DrawLine(pos, pos + Vector2.up * cellSize);
-                Debug.DrawLine(pos, pos + Vector2.right * cellSize);
+                grid[x, y] = SpawnTile(GetWorldPos(x, y));
+                grid[x, y].SetUp(x, y);
             }
         }
-
-        Debug.DrawLine(GetWorldPos(width, 0), GetWorldPos(width, height));
-        Debug.DrawLine(GetWorldPos(0, height), GetWorldPos(width, height));
     }
 
-    void GetGridPos(Vector2 pos, out int x, out int y)
+    Tile SpawnTile(Vector2 pos)
     {
-        pos -= originPos;
-
-        x = (int)(pos.x / cellSize);
-        y = (int)(pos.y / cellSize);
+        return Instantiate(tile, pos, Quaternion.identity).GetComponent<Tile>();
     }
 
     Vector2 GetWorldPos(int x, int y)
     {
-        return new Vector2(x * cellSize, y * cellSize) + originPos;
+        return new Vector2(startPos.x + x * cellSize, startPos.y + y * cellSize);
+    }
+    
+    public Tile GetTile(int x, int y)
+    {
+        if (x < 0 || x >= width || y < 0 || y >= height) 
+        {
+            return null;
+        }
+
+        return grid[x, y];
     }
 }
