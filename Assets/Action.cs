@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum ActionType
 {
@@ -8,12 +10,17 @@ public enum ActionType
 public class Action: MonoBehaviour
 {
     public int totalActivations;
-    public Vector2Int[] neighbours;
+    public List<Vector2Int> neighbours;
     public ActionType actionType;
     public float val;
 
     public void CreateAction() 
     { 
         
+    }
+
+    private void OnMouseDrag()
+    {
+        transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
     }
 }

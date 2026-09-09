@@ -5,8 +5,11 @@ using UnityEngine;
 public class Game : MonoBehaviour
 {
     public Grid grid;
+    public ActionCreator creator;
     public float maxPlayerHealth, tileAnimTime;
     float playerHealth;
+    public List<Action> deck;
+
 
     private void Start()
     {
